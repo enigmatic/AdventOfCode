@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": true,
+    "target": "es6",
+    "lib": ["es2017"],
+    "module": "commonjs", // add this
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types", "./types"]
+  }
+}

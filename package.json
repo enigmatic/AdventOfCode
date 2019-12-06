@@ -1,0 +1,36 @@
+{
+  "name": "AdventOfCode2018",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "tslint *.ts",
+    "ts": "ts-node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/room-js/adventOfCode2018-ts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/room-js/adventOfCode2018-ts/issues"
+  },
+  "homepage": "https://github.com/room-js/adventOfCode2018-ts#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "@types/chai": "^4.2.6",
+    "@types/node": "^10.12.12",
+    "@types/rbush": "^2.0.2",
+    "chai": "^4.2.0",
+    "chalk": "^2.4.1",
+    "rbush": "^2.0.2",
+    "rbush-knn": "^2.1.0",
+    "simple-pathfinder": "^1.0.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.1"
+  }
+}

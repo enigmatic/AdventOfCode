@@ -1,5 +1,5 @@
 import chai from 'chai';
-let debugging = false;
+const debugging = false;
 
 class Operation {
   opcode: number;
@@ -48,7 +48,7 @@ class IntCodeRunner {
   private runCode() {
     const getValue = (position: number, mode: number): number => {
       if (mode === 0) {
-        if (position > this._code.length) {
+        if (position >= this._code.length) {
           return this._memory.has(position)
             ? Number(this._memory.get(position))
             : 0;
@@ -66,12 +66,14 @@ class IntCodeRunner {
     };
 
     const setValue = (val: number, position: number, mode: number) => {
+      chai.assert.isNumber(val);
+
       if (mode === 2) {
         setValue(val, position + this._relativeBase, 0);
         return;
       }
 
-      if (position > this._code.length) {
+      if (position >= this._code.length) {
         this._memory.set(position, val);
       } else {
         this._code[position] = val;
@@ -87,6 +89,10 @@ class IntCodeRunner {
             getValue(this._code[this._p + 1], op.modes[0]) +
             getValue(this._code[this._p + 2], op.modes[1]);
 
+          chai.assert.isNumber(value);
+          chai.assert.isNotNaN(value);
+          chai.assert.isNotNull(value);
+
           setValue(value, this._code[this._p + 3], op.modes[2]);
           this._p += 4;
           break;
@@ -95,6 +101,11 @@ class IntCodeRunner {
           value =
             getValue(this._code[this._p + 1], op.modes[0]) *
             getValue(this._code[this._p + 2], op.modes[1]);
+
+          chai.assert.isNumber(value);
+          chai.assert.isNotNaN(value);
+          chai.assert.isNotNull(value);
+
           setValue(value, this._code[this._p + 3], op.modes[2]);
           this._p += 4;
           break;

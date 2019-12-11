@@ -6,4 +6,8 @@ export class Position {
     this.x = xyNum[0];
     this.y = xyNum[1];
   }
+
+  toString(): string {
+    return `${this.x},${this.y}`;
+  }
 }

@@ -27,8 +27,22 @@ class IntCodeRunner {
   private _relativeBase = 0;
   private _done = false;
 
-  constructor(prog: string, private _output = console.log) {
+  constructor(prog: string, private _output = console.log, wait = false) {
     this._code = prog.split(',').map(v => Number(v));
+    if (!wait) {
+      this.startRunner();
+    }
+  }
+
+  public setMemory(position: number, value: number) {
+    if (position >= this._code.length) {
+      this._memory.set(position, value);
+    } else {
+      this._code[position] = value;
+    }
+  }
+
+  public startRunner() {
     this.runCode();
   }
 

@@ -1,13 +1,32 @@
 export class Position {
-  constructor(public x = 0, public y = 0) {}
+  constructor(public x = 0, public y = 0, public z = 0) {}
 
   fromXYCoords(xy: string) {
     const xyNum = xy.split(',').map(n => Number(n));
     this.x = xyNum[0];
     this.y = xyNum[1];
+    if (xyNum.length > 2) {
+      this.z = xyNum[2];
+    }
   }
 
   toString(): string {
-    return `${this.x},${this.y}`;
+    return `${this.x},${this.y},${this.z}`;
+  }
+
+  add(delta: Position) {
+    this.x += delta.x;
+    this.y += delta.y;
+    this.z += delta.z;
+  }
+
+  addValues(x: number = 0, y: number = 0, z: number = 0) {
+    this.x += x;
+    this.y += y;
+    this.z += z;
+  }
+
+  get energy(): number {
+    return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z);
   }
 }

@@ -10,4 +10,20 @@ export class Position {
   toString(): string {
     return `${this.x},${this.y}`;
   }
+
+  get neighbors(): Position[] {
+    return [
+      new Position(this.x, this.y - 1),
+      new Position(this.x + 1, this.y),
+      new Position(this.x, this.y + 1),
+      new Position(this.x - 1, this.y)
+    ];
+  }
 }
+
+export const directions: Position[] = [
+  new Position(0, -1),
+  new Position(1, 0),
+  new Position(0, 1),
+  new Position(-1, 0)
+];

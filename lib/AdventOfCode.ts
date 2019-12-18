@@ -29,4 +29,10 @@ export class Position {
   get energy(): number {
     return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z);
   }
+
+  taxiDistance(p: Position) {
+    return (
+      Math.abs(this.x - p.x) + Math.abs(this.y - p.y) + Math.abs(this.z - p.z)
+    );
+  }
 }

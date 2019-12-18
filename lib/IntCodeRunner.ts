@@ -335,6 +335,6 @@ function tests() {
 }
 
 console.log('Testing IntCodeRunner');
-tests();
+//tests();
 
 export default IntCodeRunner;

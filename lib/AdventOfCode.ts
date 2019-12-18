@@ -1,4 +1,5 @@
 export class Position {
+  owner = 0;
   constructor(public x = 0, public y = 0, public z = 0) {}
 
   fromXYCoords(xy: string) {

@@ -1,7 +1,7 @@
 import readFile from '../../lib/readFile';
 import { Position } from '../../lib/AdventOfCode';
 
-const strData: string[] = readFile(__dirname + '/map.txt');
+const strData: string[] = readFile(__dirname + '\\map.txt');
 
 function cloneMap(map: string[][]): string[][] {
   return map.map(line => line.map(v => v));
@@ -99,11 +99,69 @@ function elementCounter(commands: string): number {
   return commands.split(',').length;
 }
 
+function stringCompress(inString: string): string[] {
+  let outString = inString;
+  let elements = inString.split(',');
+  let joinStart = 0;
+  let joinEnd = 4;
+  let testString = elements.slice(joinStart, joinEnd).join(',');
+  let testExp = RegExp(testString, 'g');
+  let match = outString.match(testExp);
+  while (match && match.length > 1) {
+    joinEnd += 2;
+    testString = elements.slice(joinStart, joinEnd).join(',');
+    testExp = RegExp(testString, 'g');
+    match = outString.match(testExp);
+  }
+  joinEnd -= 2;
+
+  const aString = elements.slice(joinStart, joinEnd).join(',');
+  outString = outString.split(aString).join('A');
+
+  elements = outString.replace(/A,?/g, '').split(',');
+  joinStart = 0;
+  joinEnd = joinStart + 4;
+  testString = elements.slice(joinStart, joinEnd).join(',');
+  testExp = RegExp(testString, 'g');
+  match = outString.match(testExp);
+  while (match && match.length > 1) {
+    joinEnd += 2;
+    testString = elements.slice(joinStart, joinEnd).join(',');
+    testExp = RegExp(testString, 'g');
+    match = outString.match(testExp);
+  }
+  joinEnd -= 2;
+
+  const bString = elements.slice(joinStart, joinEnd).join(',');
+  outString = outString.split(bString).join('B');
+
+  elements = outString.replace(/[AB],?/g, '').split(',');
+  joinStart = 0;
+  joinEnd = joinStart + 4;
+  testString = elements.slice(joinStart, joinEnd).join(',');
+  testExp = RegExp(testString, 'g');
+  match = outString.match(testExp);
+  while (match && match.length > 1) {
+    joinEnd += 2;
+    testString = elements.slice(joinStart, joinEnd).join(',');
+    testExp = RegExp(testString, 'g');
+    match = outString.match(testExp);
+  }
+  joinEnd -= 2;
+
+  const cString = elements.slice(joinStart, joinEnd).join(',');
+  outString = outString.split(cString).join('C');
+
+  return [outString, aString, bString, cString];
+}
+
 solverList.push(new MapWalker(strData.map(l => l.split(''))));
 while (solverList.length > 0) {
   const solver = solverList.shift() as MapWalker;
   solver.solve();
   if (solver.possibleSolution) {
-    console.log(solver.dirLog);
+    let result = stringCompress(solver.dirLog);
+    console.log(result);
+    break;
   }
 }

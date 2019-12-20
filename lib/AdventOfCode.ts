@@ -1,5 +1,19 @@
+import * as fs from 'fs';
+
+export function ReadFile(fileName: string): string[] {
+  const input: string = fs.readFileSync(fileName, 'utf8');
+  let inputArray: string[] = input.split('\r\n');
+  if (inputArray.length === 1) {
+    inputArray = input.split('\n');
+  }
+
+  return inputArray;
+}
+
 export class Position {
-  owner = 0;
+  owner = 0; //for Day
+  steps = 0; //Pathfinding helper
+
   constructor(public x = 0, public y = 0, public z = 0) {}
 
   fromXYCoords(xy: string) {
@@ -13,6 +27,9 @@ export class Position {
 
   toString(): string {
     return `${this.x},${this.y},${this.z}`;
+  }
+  toXYString(): string {
+    return `${this.x},${this.y}`;
   }
 
   add(delta: Position) {

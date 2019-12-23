@@ -45,7 +45,7 @@ class IntNetwork {
 
   lastOutput: number[] = [];
   stop = false;
-  needNAT = 0;
+  needNAT = true;
   line = '';
   nat = new Set<number>();
   doubleNAT = 0;
@@ -54,7 +54,7 @@ class IntNetwork {
     const me = this;
     let packet: number[] = [];
     return (outNum: number) => {
-      me.needNAT = 0;
+      me.needNAT = false;
       packet.push(outNum);
       if (packet.length === 3) {
         if (packet[0] === 255) {
@@ -68,9 +68,9 @@ class IntNetwork {
   }
 
   processPackets() {
-    this.needNAT++;
+    this.needNAT = true;
     this.cpus.forEach(c => c.process());
-    if (this.needNAT > 25) {
+    if (this.needNAT) {
       if (this.nat.has(this.lastOutput[2])) {
         this.stop = true;
       }

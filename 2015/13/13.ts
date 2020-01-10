@@ -1,7 +1,7 @@
 import chai from 'chai';
 import { ReadFile } from '../../lib/AdventOfCode';
 
-const strData: string[] = ReadFile(__dirname + '/sample.txt');
+const strData: string[] = ReadFile(__dirname + '/input.txt');
 const debugging = false;
 
 function debug(str: string) {
@@ -14,9 +14,9 @@ class SeatingOrder {
   order = '';
   happiness = 0;
 }
+getAllCases;
 
 const dinerMap = new Map<string, number>();
-const maxHappy = new Map<string, SeatingOrder>();
 const diners = new Set<string>();
 
 strData.forEach(line => {
@@ -31,59 +31,55 @@ strData.forEach(line => {
   if (words[2] === 'lose') {
     happy = -happy;
   }
-  dinerMap.set(name + neighbor, happy);
+
+  const pair = [name, neighbor].sort().join('');
+  if (dinerMap.has(pair)) {
+    happy += dinerMap.get(pair);
+  }
+
+  dinerMap.set(pair, happy);
   diners.add(name);
   diners.add(neighbor);
 });
 
+function getAllCases(dinerList: string[]): string[] {
+  if (dinerList.length === 1) {
+    return dinerList;
+  }
+  return dinerList.reduce((result, value) => {
+    const cases = getAllCases(dinerList.filter(v => v !== value));
+
+    return result.concat(cases.map(v => value + v));
+  }, []);
+}
+
 function findMaxHappy(dinerList: string[]): SeatingOrder {
-  const hashStr = dinerList.sort().join('');
-  console.log(`${hashStr}`);
-  if (maxHappy.has(hashStr)) {
-    return maxHappy.get(hashStr) as SeatingOrder;
-  }
-  const best = new SeatingOrder();
-  if (hashStr.length === 2) {
-    const p1 = Number(dinerMap.get(hashStr));
-    const p2 = Number(
-      dinerMap.get(
-        hashStr
-          .split('')
-          .reverse()
-          .join('')
-      )
-    );
-    best.order = hashStr;
-    best.happiness = p1 + p2;
-    maxHappy.set(hashStr, best);
-    console.log(`${hashStr}:${best.happiness}(${best.order})`);
-    return best;
-  }
+  const myMaxHappy = getAllCases(dinerList).reduce((max, value) => {
+    const happiness = value.split('').reduce((sum, seat, index, arr) => {
+      let happy = 0;
 
-  const myMaxHappy = dinerList.reduce((max, value) => {
-    const happyOrder = findMaxHappy(dinerList.filter(v => v !== value));
-    let happy = happyOrder.happiness;
-    const first = happyOrder.order.charAt(0);
-    const last = happyOrder.order.charAt(happyOrder.order.length - 1);
-    happy += Number(dinerMap.get(value + first));
-    happy += Number(dinerMap.get(first + value));
-    happy += Number(dinerMap.get(last + value));
-    happy += Number(dinerMap.get(value + last));
-    happy -= Number(dinerMap.get(last + first));
-    happy -= Number(dinerMap.get(first + last));
+      let neighbor: string;
+      if (index === 0) {
+        neighbor = arr[arr.length - 1];
+      } else {
+        neighbor = arr[index - 1];
+      }
 
-    if (happy > max.happiness) {
-      max.order = value + happyOrder.order;
-      max.happiness = happy;
-      console.log(`${hashStr}:${max.happiness}(${max.order})`);
+      const pair = [seat, neighbor].sort().join('');
+      if (dinerMap.has(pair)) {
+        happy += dinerMap.get(pair);
+      }
+
+      return sum + happy;
+    }, 0);
+
+    if (happiness > max.happiness) {
+      max.happiness = happiness;
+      max.order = value;
     }
     return max;
   }, new SeatingOrder());
 
-  maxHappy.set(hashStr, myMaxHappy);
-  console.log(
-    `${hashStr} + ':' + ${myMaxHappy.happiness}(${myMaxHappy.order})`
-  );
   return myMaxHappy;
 }
 
@@ -96,5 +92,7 @@ console.timeEnd('part1');
 
 console.log('part 2');
 console.time('part2');
+const bestOrderWithMe = findMaxHappy(Array.from(diners.keys()).concat(['Y']));
+console.log(bestOrderWithMe.happiness);
 
 console.timeEnd('part2');

@@ -75,6 +75,6 @@ console.log(offset);
 console.log((offset + increment * 2020) % len);
 
 console.timeEnd('part2');
-//11145301819040; low
-//11145301819041;
+//11145301819040;
+//11145301819041; low
 //90866209291611; high

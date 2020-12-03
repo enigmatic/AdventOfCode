@@ -10,6 +10,13 @@ function debug(str: string) {
   }
 }
 
+function tests() {
+  //chai.assert.
+}
+
+console.log('running tests');
+tests();
+
 console.log('running Data');
 console.time('part1');
 

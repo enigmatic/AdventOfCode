@@ -11,7 +11,7 @@ function debug(str: string) {
 }
 
 function tests() {
-  //chai.assert.
+  //chai.expect.
 }
 
 console.log('running tests');

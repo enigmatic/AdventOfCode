@@ -56,21 +56,23 @@ data.forEach(line =>{
   g.units = parseInt(line.substring(0, line.indexOf('units')));
   g.health = parseInt(line.substring(line.indexOf('each with')+10, line.indexOf('hit points')));
   if (line.includes('(')) {
-    let detail = line.substring(line.indexOf('('), line.indexOf(')')+1);
-    if (detail.includes('immune')) {
-      let endImmune = 0;
-      if (detail.includes(';'))
-        endImmune = detail.indexOf(';');
-      else
-        endImmune = detail.indexOf(')');
+    let detail = line.substring(line.indexOf('('), line.indexOf(')'));
+    let details = detail.split(';');
+    details.forEach( d => {  
+      if (d.includes("immune")) {
+        const immuneString = d.substring(d.indexOf("immune") + 10);
 
-      detail.substring(detail.indexOf('immune') +10, endImmune).split(',').forEach(i => g.immunity.add(i.trim()));
-    }
-    
-    if (detail.includes('weak')) {
-      let weakStr= detail.substring(detail.indexOf('weak to') + 8, detail.indexOf(')'));
-      weakStr.split(',').forEach(i => g.weakness.add(i.trim()));
-    }
+        immuneString.split(",")
+          .forEach((i) => g.immunity.add(i.trim()));
+      }
+
+      if (d.includes("weak")) {
+        let weakStr = d.substring(
+          d.indexOf("weak to") + 8
+        );
+        weakStr.split(",").forEach((i) => g.weakness.add(i.trim()));
+      }
+    });
   }
   let attackStr = line.substring(line.indexOf('that does') + 10).split(' ');
   g.damage = parseInt(attackStr[0]);
@@ -87,6 +89,7 @@ data.forEach(line =>{
 
 function statusPrint() {
   if (!debug) return;
+  console.log('----- ');
   groups.sort((a, b) => {
     if (a.type === b.type) return a.id - b.id;
     if (a.type == 'immune') return -1;
@@ -111,7 +114,7 @@ function targetSelection() {
     let maxDamage = 0 ;
     let bestTarget:Group | null = null;
     targets.forEach(t => {
-      if (t.type === g.type) return;
+      if (t.type === g.type || t.immunity.has(g.attackType)) return;
 
       let potentialDamage = t.checkDamage(g.effectivePower, g.attackType);
       if (potentialDamage === 0) return;
@@ -120,15 +123,16 @@ function targetSelection() {
             (bestTarget as Group).effectivePower < t.effectivePower) ||
          (potentialDamage === maxDamage && 
             (bestTarget as Group).effectivePower === t.effectivePower &&
-            (bestTarget as Group).initiative <  t.initiative)) {
+            (bestTarget as Group).initiative < t.initiative)) {
         maxDamage = potentialDamage;
         bestTarget = t;
-        if (debug) console.log( g.type, 'group', g.id, 'would deal', t.type, 'group', t.id, potentialDamage, 'damage');
       }
     });
     if (bestTarget) {
       g.target = bestTarget;
       targets.splice(targets.indexOf(bestTarget), 1);
+      
+      if (debug) console.log( g.type, 'group', g.id, 'would deal', bestTarget.type, 'group', bestTarget.id, bestTarget.checkDamage(g.effectivePower, g.attackType), 'damage');
     }
   });
 
@@ -138,6 +142,7 @@ function targetSelection() {
 function attackPhase() {
   groups.sort((a,b) => {
     return b.initiative - a.initiative;
+    
   });
 
   groups.forEach(g => {

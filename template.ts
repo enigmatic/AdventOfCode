@@ -2,6 +2,7 @@ import chai from 'chai';
 import { ReadFile } from '../../lib/AdventOfCode';
 
 const strData: string[] = ReadFile(__dirname + '/input.txt');
+//const sampleData: string[] = ReadFile(__dirname + '/sample.txt');
 const debugging = false;
 
 function debug(str: string) {

@@ -20,8 +20,7 @@ function getNumber(x:number, mask:string[]): number {
       binary[i] = v
     }
   });
-
-  return parseInt(binary.join('') , 2);
+  return parseInt(binary.map(v=> v==='X'? 0:v).join(''), 2);
 }
 
 function part1(data:string[]): number {
@@ -55,21 +54,23 @@ function mergeMask(x:number, mask:string[]):string {
 
 function writeMemory(memory:Map<number, number>, startMask:string, value:number) {
   const masks = [startMask];
-  const writeLocations = [];
+  const writeLocations:number[] = [];
   while (masks.length > 0) {
     let mask = masks.pop();
     const x = mask.indexOf('X');
     if (x === -1) {
       writeLocations.push(parseInt(mask, 2))
-    }
-    console.log(`${mask} > `)
-    for (let i = 0; i < 2; i++) {
-      let newMask = mask.substr(0,x) + i.toString() + mask.substr(x+1);
-      console.log(`---- ${newMask}`);
-      masks.push(newMask);
+    } else {
+    //console.log(`${mask} > `)
+      for (let i = 0; i < 2; i++) {
+        let newMask = mask.substr(0,x) + i.toString() + mask.substr(x+1);
+        //console.log(`---- ${newMask}`);
+        masks.push(newMask);
+      }
     }
   }
-
+  
+  writeLocations.forEach(mem => memory.set(mem, value));
 }
 
 function part2(data:string[]): number {

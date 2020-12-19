@@ -10,6 +10,11 @@ export function ReadFile(fileName: string): string[] {
   return inputArray;
 }
 
+
+export function manhattanDist(x1: number, y1: number, x2: number, y2: number): number {
+  return x1 - x2 + y1 - y2;
+}
+
 export class Position {
   owner = 0; //for Day
   steps = 0; //Pathfinding helper
@@ -44,6 +49,18 @@ export class Position {
     this.z += z;
   }
 
+  move(delta: Position, size: number) {
+    this.x += delta.x * size;
+    this.y += delta.y * size;
+    this.z += delta.z * size;
+
+  }
+  rotate(degrees:number) {
+    const newX = Math.round(this.x * Math.cos(Math.PI * degrees/180) - this.y * Math.sin(Math.PI * degrees / 180));
+    this.y = Math.round(this.x * Math.sin(Math.PI * degrees/180) + this.y * Math.cos(Math.PI * degrees / 180));
+    this.x = newX;
+  }
+
   get energy(): number {
     return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z);
   }
@@ -51,6 +68,12 @@ export class Position {
   taxiDistance(p: Position) {
     return (
       Math.abs(this.x - p.x) + Math.abs(this.y - p.y) + Math.abs(this.z - p.z)
+    );
+  }
+  
+  taxiDistanceXY(x = 0, y = 0, z = 0) {
+    return (
+      Math.abs(this.x - x) + Math.abs(this.y - y) + Math.abs(this.z - z)
     );
   }
 

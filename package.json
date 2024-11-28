@@ -1,29 +1,28 @@
 {
-  "name": "AdventOfCode2018",
-  "version": "1.0.0",
+  "name": "AdventOfCode",
+  "version": "2.2024.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "lint": "tslint *.ts",
     "ts": "ts-node",
+    "run": "ts-node main.ts",
+    "init": "ts-node init.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/room-js/adventOfCode2018-ts.git"
+    "url": "git@github.com:enigmatic/AdventOfCode.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/room-js/adventOfCode2018-ts/issues"
-  },
-  "homepage": "https://github.com/room-js/adventOfCode2018-ts#readme",
-  "devDependencies": {},
+  "homepage": "https://github.com/enigmatic/AdventOfCode",
   "dependencies": {
     "@types/chai": "^4.2.6",
     "@types/node": "^10.12.12",
     "@types/rbush": "^2.0.2",
+    "aoc-copilot": "^1.5.9",
     "bigint-crypto-utils": "^2.4.2",
     "chai": "^4.2.0",
     "chalk": "^2.4.2",

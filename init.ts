@@ -1,8 +1,8 @@
-const fs = require("fs");
-import chai from "chai";
+import * as fs from 'fs';
+import { expect } from 'earl';
 
 let args: Array<any> = process.argv.slice(2);
-chai.expect(args.length).to.eq(2);
+expect(args.length).toEqual(2);
 
 let year = args[0];
 let day = args[1];

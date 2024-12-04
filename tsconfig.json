@@ -2,13 +2,14 @@
   "compilerOptions": {
     "sourceMap": true,
     "declaration": true,
-    "target": "esNext",
-    "lib": ["es2017"],
+    "target": "es2020",
+    "lib": ["es2020"],
     "module": "commonjs", // add this
     "strict": false,
     "noImplicitAny": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "typeRoots": ["node_modules/@types", "./types"]
+    "typeRoots": ["node_modules/@types", "./types"],
+    "moduleResolution": "node",
   }
 }

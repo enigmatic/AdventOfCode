@@ -1,7 +1,7 @@
 import { expect } from 'earl';
 import { run } from "aoc-copilot";
 
-const debug = true;
+const debug = false;
 function log(text: string): void {
   if (debug) {
     console.log(text);
@@ -74,7 +74,7 @@ async function solve(
 
   let answer: number | string = 0;
 
-  console.log(inputs);
+  //console.log(inputs);
   //console.log(additionalInfo);
   answer = inputs.reduce((a,v) => {
     if (part === 1) {

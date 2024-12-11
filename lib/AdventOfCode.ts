@@ -9,6 +9,7 @@ export function ReadFile(fileName: string): string[] {
 
   return inputArray;
 }
+ 
 
 
 export function manhattanDist(x1: number, y1: number, x2: number, y2: number): number {
@@ -20,6 +21,10 @@ export class Position {
   steps = 0; //Pathfinding helper
 
   constructor(public x = 0, public y = 0, public z = 0) {}
+  
+  clone():Position{
+    return new Position(this.x, this.y, this.z);
+  }
 
   fromXYCoords(xy: string) {
     const xyNum = xy.split(',').map(n => Number(n));
@@ -93,3 +98,5 @@ export const directions: Position[] = [
   new Position(0, 1),
   new Position(-1, 0)
 ];
+
+export const oppositeDirection = [2,3,0,1];
